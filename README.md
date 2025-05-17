@@ -41,7 +41,7 @@ dependencies:
     sdk: flutter
   
   #Local Integration
-  network:
+  network_module:
     path: modules/network
 ```
 
