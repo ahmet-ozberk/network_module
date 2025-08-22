@@ -42,7 +42,7 @@ dependencies:
   
   #Local Integration
   network_module:
-    path: modules/network
+    path: modules/network_module
 ```
 
 2. Import the package in your project:
