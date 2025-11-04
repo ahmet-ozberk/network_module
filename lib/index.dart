@@ -13,3 +13,4 @@ export 'src/log/network_logger.dart';
 export 'src/extensions/dio_extensions.dart';
 export 'src/extensions/response_extensions.dart';
 export 'src/utils/connectivity_checker.dart';
+export 'package:dio/dio.dart' show FormData, MultipartFile, Options, CancelToken, ProgressCallback;
