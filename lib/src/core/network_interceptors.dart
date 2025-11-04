@@ -26,16 +26,19 @@ class LoggingInterceptor extends Interceptor {
 }
 
 class AuthInterceptor extends Interceptor {
-  final String Function()? getToken;
+  final Future<String?>? Function()? getToken;
   final String headerKey;
 
   AuthInterceptor({this.getToken, this.headerKey = 'Authorization'});
 
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+  void onRequest(
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
     if (getToken != null) {
-      final token = getToken!();
-      if (token.isNotEmpty) {
+      final token = await getToken!();
+      if (token != null && token.isNotEmpty) {
         options.headers[headerKey] = 'Bearer $token';
       }
     }
@@ -102,7 +105,7 @@ class RetryInterceptor extends Interceptor {
         if (retries >= maxRetries) {
           handler.reject(err);
           return;
-        } 
+        }
       }
     }
 

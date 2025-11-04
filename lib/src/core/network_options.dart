@@ -10,7 +10,7 @@ class NetworkOptions {
   final ResponseType responseType;
   final ValidateStatus? validateStatus;
   final bool followRedirects;
-  final String Function()? tokenProvider;
+  final Future<String?>? Function()? tokenProvider;
   final LogLevel logLevel;
 
   const NetworkOptions({
@@ -48,7 +48,7 @@ class NetworkOptions {
     ResponseType? responseType,
     ValidateStatus? validateStatus,
     bool? followRedirects,
-    String Function()? tokenProvider,
+    Future<String?>? Function()? tokenProvider,
     LogLevel? logLevel,
   }) {
     return NetworkOptions(

@@ -48,11 +48,40 @@ extension DioExtensions on Dio {
     T Function(dynamic)? converter,
   }) async {
     try {
+      Options? finalOptions = options;
+      if (data is FormData && options != null) {
+        final headers = Map<String, dynamic>.from(options.headers ?? {});
+        headers.remove('Content-Type');
+        headers.remove('content-type');
+        
+        finalOptions = Options(
+          method: options.method,
+          sendTimeout: options.sendTimeout,
+          receiveTimeout: options.receiveTimeout,
+          extra: options.extra,
+          headers: headers,
+          responseType: options.responseType,
+          contentType: options.contentType,
+          validateStatus: options.validateStatus,
+          receiveDataWhenStatusError: options.receiveDataWhenStatusError,
+          followRedirects: options.followRedirects,
+          maxRedirects: options.maxRedirects,
+          persistentConnection: options.persistentConnection,
+          requestEncoder: options.requestEncoder,
+          responseDecoder: options.responseDecoder,
+          listFormat: options.listFormat,
+        );
+      } else if (data is FormData && options == null) {
+        finalOptions = Options(
+          headers: <String, dynamic>{},
+        );
+      }
+
       final response = await post(
         path,
         data: data,
         queryParameters: queryParameters,
-        options: options,
+        options: finalOptions,
         cancelToken: cancelToken,
         onSendProgress: onSendProgress,
         onReceiveProgress: onReceiveProgress,
@@ -86,11 +115,40 @@ extension DioExtensions on Dio {
     T Function(dynamic)? converter,
   }) async {
     try {
+      Options? finalOptions = options;
+      if (data is FormData && options != null) {
+        final headers = Map<String, dynamic>.from(options.headers ?? {});
+        headers.remove('Content-Type');
+        headers.remove('content-type');
+        
+        finalOptions = Options(
+          method: options.method,
+          sendTimeout: options.sendTimeout,
+          receiveTimeout: options.receiveTimeout,
+          extra: options.extra,
+          headers: headers,
+          responseType: options.responseType,
+          contentType: options.contentType,
+          validateStatus: options.validateStatus,
+          receiveDataWhenStatusError: options.receiveDataWhenStatusError,
+          followRedirects: options.followRedirects,
+          maxRedirects: options.maxRedirects,
+          persistentConnection: options.persistentConnection,
+          requestEncoder: options.requestEncoder,
+          responseDecoder: options.responseDecoder,
+          listFormat: options.listFormat,
+        );
+      } else if (data is FormData && options == null) {
+        finalOptions = Options(
+          headers: <String, dynamic>{},
+        );
+      }
+
       final response = await put(
         path,
         data: data,
         queryParameters: queryParameters,
-        options: options,
+        options: finalOptions,
         cancelToken: cancelToken,
         onSendProgress: onSendProgress,
         onReceiveProgress: onReceiveProgress,

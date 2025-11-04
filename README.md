@@ -42,13 +42,15 @@ dependencies:
   
   #Local Integration
   network_module:
-    path: modules/network_module
+    path: modules/network
 ```
 
 2. Import the package in your project:
 
 ```dart
-import 'package:network/index.dart';
+import 'package:network_module/index.dart';
+// FormData, MultipartFile, Options, CancelToken, etc. are automatically available
+// No need to import dio separately!
 ```
 
 ## Setup
@@ -89,6 +91,22 @@ final createResponse = await dio.safePost<User>(
   '/users',
   data: {'name': 'John Doe', 'email': 'john@example.com'},
   converter: (data) => User.fromJson(data),
+);
+
+// POST request with FormData (for file uploads and multipart data)
+final formData = FormData.fromMap({
+  'name': 'John Doe',
+  'email': 'john@example.com',
+  'avatar': await MultipartFile.fromFile('/path/to/image.jpg', filename: 'avatar.jpg'),
+});
+
+final uploadResponse = await dio.safePost<User>(
+  '/users/upload',
+  data: formData,
+  converter: (data) => User.fromJson(data),
+  onSendProgress: (sent, total) {
+    print('Progress: ${(sent / total * 100).toStringAsFixed(0)}%');
+  },
 );
 
 // PUT request

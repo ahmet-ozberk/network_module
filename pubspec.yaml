@@ -1,17 +1,15 @@
 name: network_module
 description: A sample command-line application.
-version: 1.0.0
+version: 1.0.1
 # repository: https://github.com/my_org/my_repo
 
 environment:
-  sdk: ^3.7.2
+  sdk: ^3.9.2
 
 # Add regular dependencies here.
 dependencies:
-  # path: ^1.8.0
-  dio: ^5.8.0+1
-  network: ^1.0.0-nullsafety.0
+  dio: 5.9.0
 
 dev_dependencies:
-  lints: ^5.0.0
-  test: ^1.24.0
+  lints: ^6.0.0
+  test: ^1.26.3

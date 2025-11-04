@@ -25,7 +25,7 @@ class NetworkModule {
     Duration receiveTimeout = const Duration(seconds: 30),
     Duration sendTimeout = const Duration(seconds: 30),
     Map<String, dynamic> headers = const {},
-    String Function()? tokenProvider,
+    Future<String?>? Function()? tokenProvider,
     LogLevel logLevel = LogLevel.all,
     ConnectivityChecker? connectivityChecker,
     NetworkLogger? logger,
