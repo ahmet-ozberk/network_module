@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import '../log/network_logger.dart';
+import 'auth_token_type.dart';
 
 class NetworkOptions {
   final String baseUrl;
@@ -11,6 +12,7 @@ class NetworkOptions {
   final ValidateStatus? validateStatus;
   final bool followRedirects;
   final Future<String?>? Function()? tokenProvider;
+  final AuthTokenType tokenType;
   final LogLevel logLevel;
 
   const NetworkOptions({
@@ -23,6 +25,7 @@ class NetworkOptions {
     this.validateStatus,
     this.followRedirects = true,
     this.tokenProvider,
+    this.tokenType = AuthTokenType.bearer,
     this.logLevel = LogLevel.all,
   });
 
@@ -34,8 +37,12 @@ class NetworkOptions {
       sendTimeout: sendTimeout,
       headers: headers,
       responseType: responseType,
-      validateStatus: validateStatus,
-      followRedirects: followRedirects,
+      validateStatus:
+          validateStatus ??
+          (status) {
+            return status != null && status >= 200 && status < 300;
+          },
+      followRedirects: false,
     );
   }
 
@@ -49,6 +56,7 @@ class NetworkOptions {
     ValidateStatus? validateStatus,
     bool? followRedirects,
     Future<String?>? Function()? tokenProvider,
+    AuthTokenType? tokenType,
     LogLevel? logLevel,
   }) {
     return NetworkOptions(
@@ -61,6 +69,7 @@ class NetworkOptions {
       validateStatus: validateStatus ?? this.validateStatus,
       followRedirects: followRedirects ?? this.followRedirects,
       tokenProvider: tokenProvider ?? this.tokenProvider,
+      tokenType: tokenType ?? this.tokenType,
       logLevel: logLevel ?? this.logLevel,
     );
   }

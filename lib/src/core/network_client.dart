@@ -16,23 +16,21 @@ class NetworkClient {
     ConnectivityChecker? connectivityChecker,
     NetworkLogger? logger,
     required this.isLoggerEnable,
-  })  : _dio = Dio(options.toDioOptions()),
-        connectivityChecker = connectivityChecker ?? ConnectivityChecker(),
-        logger = logger ?? NetworkLogger(level: options.logLevel) {
+  }) : _dio = Dio(options.toDioOptions()),
+       connectivityChecker = connectivityChecker ?? ConnectivityChecker(),
+       logger = logger ?? NetworkLogger(level: options.logLevel) {
     _setupInterceptors();
   }
 
   Dio get dio => _dio;
 
   void _setupInterceptors() {
-
-    if (!isLoggerEnable) return;
-
-    _dio.interceptors.add(LoggingInterceptor(logger: logger));
-
     if (options.tokenProvider != null) {
       _dio.interceptors.add(
-        AuthInterceptor(getToken: options.tokenProvider),
+        AuthInterceptor(
+          getToken: options.tokenProvider,
+          tokenType: options.tokenType,
+        ),
       );
     }
 
@@ -42,9 +40,11 @@ class NetworkClient {
       ),
     );
 
-    _dio.interceptors.add(
-      RetryInterceptor(dio: _dio),
-    );
+    if (isLoggerEnable) {
+      _dio.interceptors.add(LoggingInterceptor(logger: logger));
+
+      _dio.interceptors.add(RetryInterceptor(dio: _dio));
+    }
   }
 
   void addInterceptor(Interceptor interceptor) {

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import '../log/network_logger.dart';
+import 'auth_token_type.dart';
 
 class LoggingInterceptor extends Interceptor {
   final NetworkLogger logger;
@@ -28,18 +29,23 @@ class LoggingInterceptor extends Interceptor {
 class AuthInterceptor extends Interceptor {
   final Future<String?>? Function()? getToken;
   final String headerKey;
+  final AuthTokenType tokenType;
 
-  AuthInterceptor({this.getToken, this.headerKey = 'Authorization'});
+  AuthInterceptor({
+    this.getToken,
+    this.headerKey = 'Authorization',
+    this.tokenType = AuthTokenType.bearer,
+  });
 
   @override
-  void onRequest(
+  Future<void> onRequest(
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
     if (getToken != null) {
       final token = await getToken!();
       if (token != null && token.isNotEmpty) {
-        options.headers[headerKey] = 'Bearer $token';
+        options.headers[headerKey] = tokenType.format(token);
       }
     }
     handler.next(options);

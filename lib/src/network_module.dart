@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'core/network_client.dart';
 import 'core/network_options.dart';
+import 'core/auth_token_type.dart';
 import 'log/network_logger.dart';
 import 'utils/connectivity_checker.dart';
 
@@ -26,6 +27,7 @@ class NetworkModule {
     Duration sendTimeout = const Duration(seconds: 30),
     Map<String, dynamic> headers = const {},
     Future<String?>? Function()? tokenProvider,
+    AuthTokenType tokenType = AuthTokenType.bearer,
     LogLevel logLevel = LogLevel.all,
     ConnectivityChecker? connectivityChecker,
     NetworkLogger? logger,
@@ -38,6 +40,7 @@ class NetworkModule {
       sendTimeout: sendTimeout,
       headers: headers,
       tokenProvider: tokenProvider,
+      tokenType: tokenType,
       logLevel: logLevel,
     );
 
